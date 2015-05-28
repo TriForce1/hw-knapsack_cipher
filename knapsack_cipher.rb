@@ -62,6 +62,7 @@ class KnapsackCipher
   def self.decrypt(cipherarray, superknap=DEF_SUPER, m=M, n=N)
     raise(ArgumentError, "Argument should be a SuperKnapsack object"
       ) unless superknap.is_a? SuperKnapsack
+
     # TODO: implement this method
 
     knapsack = superknap.knapsack
