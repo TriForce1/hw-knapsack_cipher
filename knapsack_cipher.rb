@@ -46,6 +46,9 @@ class KnapsackCipher
   # - Array of encrypted numbers
   def self.encrypt(plaintext, generalknap=DEF_GENERAL)
     # TODO: implement this method
+    newtext = plaintext.chars.map { |x| x.ord}
+    newtext.map! {|y| y.to_s(2).split('').map { |x| x.to_i} }
+    bin = newtext.map {|x| x.zip(generalknap).map { |p, r| p * r}.reduce(:+)}
   end
 
   # Decrypts encrypted Array
