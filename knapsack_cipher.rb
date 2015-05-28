@@ -47,7 +47,7 @@ class KnapsackCipher
   def self.encrypt(plaintext, generalknap=DEF_GENERAL)
     # TODO: implement this method
     newtext = plaintext.chars.map { |x| x.ord}
-    newtext.map! {|y| y.to_s(2).split('').map { |x| x.to_i} }
+    newtext.map! {|y| ("%08b" % y).split('').map { |x| x.to_i } }
     bin = newtext.map {|x| x.zip(generalknap).map { |p, r| p * r}.reduce(:+)}
   end
 
@@ -64,5 +64,31 @@ class KnapsackCipher
       ) unless superknap.is_a? SuperKnapsack
 
     # TODO: implement this method
+
+    knapsack = superknap.knapsack
+    inverse = ModularArithmetic::invert(m, n)
+    plaintext = ''
+    cipherarray.each do |cipher|
+      accept = []
+      plain_binary = ''
+      modular_inverse = cipher * inverse % n
+      
+      knapsack.reverse.each do |knap|
+        if knap <= modular_inverse
+          accept << knap
+          modular_inverse = modular_inverse - knap
+        end
+      end
+
+      knapsack.each do |knap|
+        if accept.include? knap
+          plain_binary << '1'
+        else
+          plain_binary << '0'
+        end
+      end
+      plaintext << plain_binary.to_i(2).chr
+    end
+    plaintext
   end
 end
